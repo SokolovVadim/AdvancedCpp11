@@ -1,23 +1,28 @@
 #include <iostream>
+#include <string>
 
-class Dog {};
+class Collar{
+public:
+	Collar() { std::cout << "collar is born\n"; }
+};
 
 class Dog{
-public:
-	Dog(const Dog& rhs) { ... }; // Member by member initialization
-	Dog & operator=(const Dog& rhs) { ... }; // Member by member copying
-	Dog() { ... };  // 1. Call base class's default constructor;
-					// 2. Call data member's default constructor.
-	~Dog() { ... }; // 1. Call base class's destructor;
-					// 2. Call daat member's destructor.
-}
+	Collar      m_collar;
+	std::string m_name;
+};
 
+class Cat{
+public:
+	Cat() = default;
+	Cat(std::string name) { std::cout << name << " is born\n"; }
+};
 
 // --------------------------------------------------------------------
 
 int main()
 {
-	
-
+	Dog dog;
+	Cat cat;
+	Cat catTom("Tom");
 	return 0;
 }
