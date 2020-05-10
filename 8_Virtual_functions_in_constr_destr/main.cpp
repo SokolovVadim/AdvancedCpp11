@@ -5,25 +5,33 @@
 class Dog
 {
 public:
-	std::string m_name;
-	Dog(std::string name)
+	Dog()
 	{
-		m_name = name;
-		std::cout << name << " is born" << std::endl;
+		std::cout << "Dog born" << std::endl;
+		bark();
 	}
-	~Dog()
+	virtual void bark()
 	{
-		std::cout << m_name << " is destroyed" << std::endl;
+		std::cout << "I'm just a dog" << std::endl;
 	}
-	void prepareToDestr()
+	void seeCat()
 	{
-		std::cout << "Preparation ..." << std::endl;
-		throw 10;
+		bark();
 	}
-	void bark()
+};
+
+class YellowDod: public Dog
+{
+public:
+	YellowDod()
 	{
-		std::cout << "bark!" << std::endl;
+		std::cout << "YellowDod born" << std::endl;
 	}
+	virtual void bark()
+	{
+		std::cout << "I'm a YellowDod" << std::endl;
+	}
+
 };
 
 
@@ -31,16 +39,7 @@ public:
 
 int main()
 {
-	try{
-		Dog henry("Henry");
-		Dog bob("Bob");
-		
-		henry.bark();
-		bob.bark();
-		henry.prepareToDestr();
-		bob.prepareToDestr();
-	} catch(int e){
-		std::cout << e << " is caught" << std::endl;
-	}
+	YellowDod d;
+	d.seeCat();
 	return 0;
 }

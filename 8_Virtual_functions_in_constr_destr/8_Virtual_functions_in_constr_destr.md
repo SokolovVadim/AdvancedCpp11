@@ -1,25 +1,35 @@
-# Exceptions in destructor
-
-## Exceptions in `main()`
+# Virtual function in constructor or destructor
 
 ```
 class Dog
 {
 public:
-	std::string m_name;
-	Dog(std::string name)
+	Dog()
 	{
-		m_name = name;
-		std::cout << name << " is born" << std::endl;
-	}
-	~Dog()
-	{
-		std::cout << m_name << " is destroyed" << std::endl;
+		std::cout << "Dog born" << std::endl;
 	}
 	void bark()
 	{
-		std::cout << "bark!" << std::endl;
+		std::cout << "I'm just a dog" << std::endl;
 	}
+	void seeCat()
+	{
+		bark();
+	}
+};
+
+class YellowDod: public Dog
+{
+public:
+	YellowDod()
+	{
+		std::cout << "YellowDod born" << std::endl;
+	}
+	void bark()
+	{
+		std::cout << "I'm a YellowDod" << std::endl;
+	}
+
 };
 
 
@@ -27,76 +37,14 @@ public:
 
 int main()
 {
-	try{
-		Dog henry("Henry");
-		Dog bob("Bob");
-		throw 20;
-		henry.bark();
-		bob.bark();
-
-	} catch(int e){
-		std::cout << e << " is caught" << std::endl;
-	}
+	YellowDod d;
+	d.seeCat();
 	return 0;
 }
 ```
 
-## Exception in destructor
+The dog barks "I'm just a dog", but this dog is yellow ...
+To solve this problem it's suitable to use `virtual` keyword
 
-```
-	~Dog()
-	{
-		std::cout << m_name << " is destroyed" << std::endl;
-		throw 10;
-	}
-```
+`virtual void bark()`
 
-## Problem
-
-It will result in terminate call
-
-`terminate called after throwing an instance of 'int'`
-
-Two exceptions pending at the same time
-
-## Solution 1: Destructor swallow the exception
-
-```
-	~Dog()
-	{
-		try{
-			std::cout << m_name << " is destroyed" << std::endl;
-			throw 10;
-		} catch (MYEXCEPTION & e){
-			std::cout << e << " is caught" << std::endl;
-		} catch (...) {
-			// ...
-		}
-
-	}
-```
-
-## Solution 2: Move the exception-prone code to a different function
-
-```
-	void prepareToDestr()
-	{
-		std::cout << "Preparation ..." << std::endl;
-		throw 10;
-	}
-```
-
-```
-	Dog henry("Henry");
-	Dog bob("Bob");
-	
-	henry.bark();
-	bob.bark();
-	henry.prepareToDestr();
-	bob.prepareToDestr();
-```
-
-## Handling the exception
-
- - Dog: 1
- - Dog's client: 2
