@@ -8,7 +8,6 @@ public:
 	Dog()
 	{
 		std::cout << "Dog born" << std::endl;
-		bark();
 	}
 	virtual void bark()
 	{
@@ -27,7 +26,7 @@ public:
 	{
 		std::cout << "YellowDod born" << std::endl;
 	}
-	virtual void bark()
+	void bark() override 
 	{
 		std::cout << "I'm a YellowDod" << std::endl;
 	}
