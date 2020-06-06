@@ -1,127 +1,59 @@
-# Implicit type conversion
+# All casting considered 1
 
-## Implicit standart type conversion
-
-```
-	char c = 'A';
-	int i = c; // Integral promotion
-	char* pc = 0; // Null pointer initialization
-
-	void f(int i);
-	f(c);
-
-	dog* pd = new yellowdog(); // pointer conversion
-```
-
-## Implicit user defined type conversion
-
-### Methods
-
-1. Use constructor that can accept a single parameter -- convert other types of object into your class
-2. Use the type conversion function -- convert an object of your class into other types
+1. Static cast
 
 ```
-class Dog
-{
-public:
-	Dog(const std::string& name) // no explicit 
-	{
-		name_ = name;
-	}
-	// std::string getName() { return name_; }
-	operator std::string () const { return name_; }
-private:
-	std::string name_;
-};
-
-// --------------------------------------------------------------------
-
-int main()
-{
-	Dog dog("Bob");
-	std::string dogname = dog;
-	std::cout << dogname << std::endl;
-	return 0;
-}
-
-int main()
-{
-	std::string dogname = "Bob";
-	Dog dog = dogname;
-	std::cout << "My name is " << dogname << std::endl;
-	return 0;
-}
+in ti = 9;
+float f = static_cast<float>(i);
+Dog dog = static_cast<Dog>(std::string("Bob"));
+Dog* pd = static_cast<Dog*>(new Yellowdog()); // down / up cast
 ```
 
-## Principles
-
-1. Avoid defining seemingly unexpected conversion
-2. Avoid defining two-way implicit conversion
-
-## Implicit type conversion with operators
+2. Dynamic cast
 
 ```
-class Rational
-{
-public:
-	Rational(int numerator =  0, int denominator = 1):
-		num(numerator),
-		den(denominator)
-	{}
-	const Rational operator*(const Rational& rhs)
-	{
-		return Rational(num * rhs.num, den * rhs.den);
-	}
-	operator int() const { return num / den; }
-private:
-	int num;
-	int den;
-};
-// --------------------------------------------------------------------
-
-int main()
-{
-	Rational r1 = 20;
-	Rational r2 = r1 * 5;
-	Rational r3 = 3 * r2;
-
-	return 0;
-}
-```
-
-This code doesn't work correctly
-
-## Solution:
+Dog* pd = new Yellowdog();
+Yellowdog* py = dynamic_cast<Yellowdog*>(pd);
 
 ```
-class Rational
-{
-public:
-	Rational(int numerator =  0, int denominator = 1):
-		num(numerator),
-		den(denominator)
-	{}
-	friend const Rational operator*(const Rational& rhs, const Rational& lhs);
-	int getNum() const { return num; }
-	int getDen() const { return den; }
-private:
-	int num;
-	int den;
-};
+Can not work on objects	
+Converts pointer / ref from one type to related type
+Run-time type check. If succeed, py == pd, if fail: py = 0
+It requires 2 types to be polymorthic (at least one virtual function)
 
-const Rational operator*( const Rational& rhs, const Rational& lhs)
-{
-	return Rational(lhs.num * rhs.num, lhs.den * rhs.den);
-}
+3. COnst cast
 
-// --------------------------------------------------------------------
-
-int main()
-{
-	Rational r1 = 20;
-	Rational r2 = r1 * 5;
-	Rational r3 = 3 * r2;
-	std::cout << r3.getNum() << " / " << r3.getDen() << std::endl;
-	return 0;
-}
 ```
+const char* str = "Hello";
+char* modifiable = const_cast<char*>(str);	
+```
+
+Only works on pointers
+Only works on same type
+Cast away constness of the object being pointed to
+
+4. Reinterpret cast
+
+```
+long p = 0x87746246132
+Dog* dd = reinterpret_cast<Dog>(p);
+```
+
+Reinterprets the bits of object pointed to
+Can cast one pointer to any cast of pointers
+
+5. C-Style cast
+
+```
+short a = 200;
+int i = (int)a; // cast notation
+int j = int(a); // functional notation
+```
+
+## Preferences
+
+C++ style of cast is preffered
+1. Easier to identify in code
+2. Less usage error
+- Narrowly specified purpose of each cast
+- Run-tyme type check
