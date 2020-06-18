@@ -113,7 +113,7 @@ const int c = 1; // c is a lvalue
 c = 2; // Error, c is not modifiable
 ```
 
-## Misconception 2:
+## Misconception 3:
 
 Rvalues are not modifiable
 
