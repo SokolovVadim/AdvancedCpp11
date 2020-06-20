@@ -67,9 +67,9 @@ int main()
 
 		File
 		/  \
-InputFile   OutputFile
+        InputFile   OutputFile
 		\   /
-	   IOFile
+	       IOFile
 
 ## Virtual inheritance:
 
