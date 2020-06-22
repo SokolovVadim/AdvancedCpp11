@@ -72,11 +72,10 @@ b. Composition can be bound either at compile time or at run time
 
 3. Composition has flexible code constructions
 
-Dog           ActivityManager
-
-BullDog       OutdoorActivityManager
-ShepherdDog   IndoorActivityManager
-...           ...
+Dog &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ActivityManager  
+BullDog &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; OutdoorActivityManager  
+ShepherdDog &nbsp; &nbsp; IndoorActivityManager  
+... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ...
 
 ```
 class OutdoorActivityManager: public ActivityManager{};
